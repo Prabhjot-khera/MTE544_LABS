@@ -24,7 +24,7 @@ class Logger:
             vals_str=""
 
             # TODO Part 5: Write the values from the list to the file
-            ...
+            vals_str = ', '.join(str(value) for value in values_list)
             
             vals_str+="\n"
             
@@ -85,7 +85,8 @@ def euler_from_quaternion(quat):
     Convert quaternion (w in last place) to euler roll, pitch, yaw.
     quat = [x, y, z, w]
     """
-    ... # just unpack yaw
+    # just unpack yaw
+    x, y, z, w = quat
+    yaw = atan2(2.0 * (w * z + x * y), 1.0 - 2.0 * (y * y + z * z)) # Question: we got this formula from robotic stack exchange, where are we expected to get this from? e.g. from slides?
     return yaw
-
 

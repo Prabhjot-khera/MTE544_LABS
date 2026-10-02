@@ -78,15 +78,35 @@ class motion_executioner(Node):
     # You can save the needed fields into a list, and pass the list to the log_values function in utilities.py
 
     def imu_callback(self, imu_msg: Imu):
-        ...    # log imu msgs
+        # log imu msgs
+        self.imu_logger.log_values([
+            imu_msg.linear_acceleration.x,
+            imu_msg.linear_acceleration.y,
+            imu_msg.angular_velocity.z,
+            Time.from_msg(imu_msg.header.stamp).nanoseconds,
+        ])
+        self.imu_initialized = True
         
     def odom_callback(self, odom_msg: Odometry):
-        
-        ... # log odom msgs
+        # log odom msgs
+        position = odom_msg.pose.pose.position
+        orientation = odom_msg.pose.pose.orientation
+        yaw = euler_from_quaternion([
+            orientation.x, orientation.y, orientation.z, orientation.w,
+        ])
+        self.odom_logger.log_values([
+            position.x, position.y, yaw,
+            Time.from_msg(odom_msg.header.stamp).nanoseconds,
+        ])
+        self.odom_initialized = True
                 
     def laser_callback(self, laser_msg: LaserScan):
-        
-        ... # log laser msgs with position msg at that time
+        # log laser msgs with position msg at that time
+        self.laser_logger.log_values(list(laser_msg.ranges) + [
+            laser_msg.angle_increment,
+            Time.from_msg(laser_msg.header.stamp).nanoseconds,
+        ])
+        self.laser_initialized = True
                 
     def timer_callback(self):
         
