@@ -33,6 +33,7 @@ class motion_executioner(Node):
         self.type=motion_type
         
         self.radius_=0.0
+        self.spiral_speed=0.2
         
         self.successful_init=False
         self.imu_initialized=False
@@ -118,17 +119,23 @@ class motion_executioner(Node):
     def make_circular_twist(self):
         
         msg=Twist()
-        ... # fill up the twist msg for circular motion
+        # fill up the twist msg for circular motion
+        msg.linear.x=0.2
+        msg.angular.z=0.2
         return msg
 
     def make_spiral_twist(self):
         msg=Twist()
-        ... # fill up the twist msg for spiral motion
+        # fill up the twist msg for spiral motion
+        self.spiral_speed = self.spiral_speed + 0.01
+        msg.linear.x=self.spiral_speed
+        msg.angular.z=0.2
         return msg
     
-    def make_acc_line_twist(self):
+    def make_acc_line_twist(self): # question: should we accelerate the line motion or just keep it constant?
         msg=Twist()
-        ... # fill up the twist msg for line motion
+        # fill up the twist msg for line motion
+        msg.linear.x=0.2
         return msg
 
 import argparse
