@@ -141,7 +141,7 @@ class motion_executioner(Node):
         msg=Twist()
         # fill up the twist msg for circular motion
         msg.linear.x=0.2
-        msg.angular.z=0.2
+        msg.angular.z=-0.2
         return msg
 
     def make_spiral_twist(self):
