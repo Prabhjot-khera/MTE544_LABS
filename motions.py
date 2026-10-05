@@ -33,7 +33,7 @@ class motion_executioner(Node):
         self.type=motion_type
         
         self.radius_=0.0
-        self.spiral_speed=0.2
+        self.spiral_speed=0.1
         
         self.successful_init=False
         self.imu_initialized=False
@@ -41,7 +41,7 @@ class motion_executioner(Node):
         self.laser_initialized=False
         
         # TODO Part 3: Create a publisher to send velocity commands by setting the proper parameters in (...)
-        self.vel_publisher=self.create_publisher(Twist, '/cmd_vel', qos_profile=QoSProfile(depth=10))
+        self.vel_publisher=self.create_publisher(Twist, '/cmd_vel', 10)
                 
         # loggers
         self.imu_logger=Logger('imu_content_'+str(motion_types[motion_type])+'.csv', headers=["acc_x", "acc_y", "angular_z", "stamp"])
@@ -140,22 +140,22 @@ class motion_executioner(Node):
         
         msg=Twist()
         # fill up the twist msg for circular motion
-        msg.linear.x=0.2
-        msg.angular.z=-0.2
+        msg.linear.x=0.1
+        msg.angular.z=-0.3
         return msg
 
     def make_spiral_twist(self):
         msg=Twist()
         # fill up the twist msg for spiral motion
-        self.spiral_speed = self.spiral_speed + 0.01
+        self.spiral_speed = self.spiral_speed + 0.001
         msg.linear.x=self.spiral_speed
-        msg.angular.z=0.2
+        msg.angular.z=0.5
         return msg
     
     def make_acc_line_twist(self): # question: should we accelerate the line motion or just keep it constant?
         msg=Twist()
         # fill up the twist msg for line motion
-        msg.linear.x=0.2
+        msg.linear.x=0.4
         return msg
 
 import argparse
