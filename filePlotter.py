@@ -4,6 +4,7 @@
 
 import matplotlib.pyplot as plt
 from utilities import FileReader
+import os
 
 def plot_errors(filename):
     
@@ -14,8 +15,17 @@ def plot_errors(filename):
     for val in values:
         time_list.append(val[-1] - first_stamp)
 
+    # obtain type of data (e.g. odom content circle) from the file name
+    name = os.path.splitext(os.path.basename(filename))[0].replace("_", " ")
+
     for i in range(0, len(headers) - 1):
         plt.plot(time_list, [lin[i] for lin in values], label= headers[i]+ " linear")
+        plt.title(name)
+        if "odom" in name:
+            plt.ylabel("Position (m), Heading (rad)")
+        if "imu" in name:
+            plt.ylabel("Acceleration (m/s^2), (rad/s^2)")
+        plt.xlabel("Time (ns)")
     
     #plt.plot([lin[0] for lin in values], [lin[1] for lin in values])
     plt.legend()
