@@ -24,7 +24,7 @@ def plot_errors(filename):
         if "odom" in name:
             plt.ylabel("Position (m), Heading (rad)")
         if "imu" in name:
-            plt.ylabel("Acceleration (m/s^2), (rad/s^2)")
+            plt.ylabel("Acceleration (m/s^2), (rad/s)")
         plt.xlabel("Time (ns)")
     
     #plt.plot([lin[0] for lin in values], [lin[1] for lin in values])
