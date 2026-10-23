@@ -55,6 +55,7 @@ class decision_maker(Node):
         # Instantiate the planner
         # NOTE: goalPoint is used only for the pointPlanner
         self.goal=self.planner.plan(goalPoint)
+        self.error_threshold_m = 0.1 # error threshold (***TUNE IF NEEDED***) in meters
 
         self.create_timer(publishing_period, self.timerCallback)
 
@@ -63,6 +64,7 @@ class decision_maker(Node):
         
         # TODO Part 3: Run the localization node
         ...    # Remember that this file is already running the decision_maker node.
+        spin_once(self.localizer)
 
         if self.localizer.getPose()  is  None:
             print("waiting for odom msgs ....")
@@ -72,9 +74,9 @@ class decision_maker(Node):
         
         # TODO Part 3: Check if you reached the goal
         if type(self.goal) == list:
-            reached_goal=...
+            reached_goal= True if (calculate_linear_error(self.localizer.getPose(), self.goal) < self.error_threshold_m) else False
         else: 
-            reached_goal=...
+            reached_goal= True if (calculate_linear_error(self.localizer.getPose(), self.goal) < self.error_threshold_m) else False
         
 
         if reached_goal:
