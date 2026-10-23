@@ -107,7 +107,7 @@ def main(args=None):
     # TODO Part 3: You migh need to change the QoS profile based on whether you're using the real robot or in simulation.
     # Remember to define your QoS profile based on the information available in "ros2 topic info /odom --verbose" as explained in Tutorial 3
     odom_qos = QoSProfile(
-                history=HistoryPolicy.UNKNOWN,
+                history=HistoryPolicy.KEEP_LAST,
                 depth=10,
                 reliability=ReliabilityPolicy.RELIABLE,
                 durability=DurabilityPolicy.VOLATILE
