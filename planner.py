@@ -1,5 +1,8 @@
 # Type of planner
+import math 
+
 POINT_PLANNER=0; TRAJECTORY_PLANNER=1
+PARABOLA = 0; SIGMOID = 1
 
 
 
@@ -25,7 +28,28 @@ class planner:
 
     # TODO Part 6: Implement the trajectories here
     def trajectory_planner(self):
-        pass
+        path = SIGMOID
+        trajectory = []
+        if path == PARABOLA: 
+            x = 0.0
+            while x <= 1.5:
+                y = x ** 2
+                trajectory.append([x, y])
+                x += 0.01  
+        
+        if (path == SIGMOID):
+            x = 0.0
+            while x <= 2.5:
+                sigmoid = 2/(1+math.e**(-2*(x))) - 1
+                trajectory.append([x,sigmoid]) 
+                x+=0.01
+
         # the return should be a list of trajectory points: [ [x1,y1], ..., [xn,yn]]
-        # return 
+        print(trajectory)
+        return trajectory 
+
+if __name__=="__main__":
+    _planner = planner(1)
+    _planner.plan()
+
 
