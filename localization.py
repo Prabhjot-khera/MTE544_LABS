@@ -29,6 +29,7 @@ class localization(Node):
             )
         
         self.loc_logger=Logger("robot_pose.csv", ["x", "y", "theta", "stamp"])
+        self.velocity_logger=Logger("robot_velocity.csv", ["v", "omega", "stamp"])
         self.pose=None
         
         if localizationType == rawSensor:
@@ -51,6 +52,12 @@ class localization(Node):
         
         # Log the data
         self.loc_logger.log_values([self.pose[0], self.pose[1], self.pose[2], Time.from_msg(self.pose[3]).nanoseconds])
+        
+        twist = pose_msg.twist.twist
+        self.velocity_logger.log_values([
+            twist.linear.x, twist.angular.z,
+            Time.from_msg(pose_msg.header.stamp).nanoseconds,
+        ])
     
     def getPose(self):
         return self.pose
