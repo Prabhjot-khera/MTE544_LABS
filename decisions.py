@@ -29,7 +29,7 @@ class decision_maker(Node):
         super().__init__("decision_maker")
 
         #TODO Part 4: Create a publisher for the topic responsible for robot's motion
-        self.publisher=self.create_publisher(publishing_topic, publisher_msg, 10)
+        self.publisher=self.create_publisher(publishing_topic, publisher_msg, qos_profile = qos_publisher)
 
         publishing_period=1/rate
         
@@ -37,12 +37,12 @@ class decision_maker(Node):
         # TODO Part 5: Tune your parameters here
         
         if motion_type == POINT_PLANNER:
-            self.controller=controller(klp=0.2, klv=0.5, kap=0.8, kav=0.6)
+            self.controller=controller(klp=0.2, klv=0.5, kli=0.2, kap=0.4, kav=0.6, kai=0.2)
             self.planner=planner(POINT_PLANNER)    
     
     
         elif motion_type==TRAJECTORY_PLANNER:
-            self.controller=trajectoryController(klp=0.2, klv=0.5, kap=0.8, kav=0.6)
+            self.controller=trajectoryController(klp=0.4, klv=0.3, kli=0.2, kap=0.8, kav=0.3, kai=0.2)
             self.planner=planner(TRAJECTORY_PLANNER)
 
         else:
@@ -55,7 +55,7 @@ class decision_maker(Node):
         # Instantiate the planner
         # NOTE: goalPoint is used only for the pointPlanner
         self.goal=self.planner.plan(goalPoint)
-        self.error_threshold_m = 0.1 # error threshold (***TUNE IF NEEDED***) in meters
+        self.error_threshold_m = 0.03 # error threshold (***TUNE IF NEEDED***) in meters
 
         self.create_timer(publishing_period, self.timerCallback)
 
@@ -117,7 +117,7 @@ def main(args=None):
 
     # TODO Part 4: instantiate the decision_maker with the proper parameters for moving the robot
     if args.motion.lower() == "point":
-        DM=decision_maker('/cmd_vel', Twist, odom_qos, [-1, -1], rate=10, motion_type=POINT_PLANNER) # *** DEFAULT GOAL POINT [-1, -1]
+        DM=decision_maker('/cmd_vel', Twist, odom_qos, [1, 1], rate=10, motion_type=POINT_PLANNER) # *** DEFAULT GOAL POINT [-1, -1]
     elif args.motion.lower() == "trajectory":
         DM=decision_maker('/cmd_vel', Twist, odom_qos, [-1, -1], rate=10, motion_type=TRAJECTORY_PLANNER)
     else:

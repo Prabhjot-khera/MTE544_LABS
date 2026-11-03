@@ -24,7 +24,7 @@ class localization(Node):
         odom_qos = QoSProfile(
                 history=HistoryPolicy.KEEP_LAST,
                 depth=10,
-                reliability=ReliabilityPolicy.RELIABLE,
+                reliability=ReliabilityPolicy.BEST_EFFORT,
                 durability=DurabilityPolicy.VOLATILE
             )
         

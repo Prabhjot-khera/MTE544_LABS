@@ -12,7 +12,7 @@ class controller:
     
     
     # Default gains of the controller for linear and angular motions
-    def __init__(self, klp=0.2, klv=0.2, kli=0.2, kap=0.2, kav=0.2, kai=0.2):
+    def __init__(self, klp=0.2, klv=0.2, kli=0.2, kap=0.5, kav=0.2, kai=0.2):
         
         # TODO Part 5 and 6: Modify the below lines to test your PD, PI, and PID controller
         self.PID_linear=PID_ctrl(PID, klp, klv, kli, filename_="linear.csv")
@@ -29,8 +29,8 @@ class controller:
         angular_vel=self.PID_angular.update([e_ang, pose[3]], status)
         
         # TODO Part 4: Add saturation limits for the robot linear and angular velocity
-        linear_vel = 0.2 if linear_vel > 0.2 else linear_vel # *** Set to 0.2 by burger 3 specifications, change for burger 4 ***
-        angular_vel= angular_vel/abs(angular_vel) if abs(angular_vel) > 2.8 else angular_vel # *** Set to 2.8 by burger 3 specifications, change for burger 4 ***
+        linear_vel = 0.46 if linear_vel > 0.46 else linear_vel # *** 0.2 by burger 3 specifications, changed for burger 4 ***
+        angular_vel= 1.9*angular_vel/abs(angular_vel) if abs(angular_vel) > 1.9 else angular_vel # *** 2.8 by burger 3 specifications, change for burger 4 ***
         
         return linear_vel, angular_vel
     
@@ -55,8 +55,8 @@ class trajectoryController(controller):
         angular_vel=self.PID_angular.update([e_ang, pose[3]], status) 
 
         # TODO Part 5: Add saturation limits for the robot linear and angular velocity
-        linear_vel = 0.2 if linear_vel > 0.2 else linear_vel # *** Set to 0.2 by burger 3 specifications, change for burger 4 ***
-        angular_vel= angular_vel/abs(angular_vel) if abs(angular_vel) > 2.8 else angular_vel # *** Set to 2.8 by burger 3 specifications, change for burger 4 ***
+        linear_vel = 0.46 if linear_vel > 0.46 else linear_vel # *** Set to 0.2 by burger 3 specifications, change for burger 4 ***
+        angular_vel= 1.9*angular_vel/abs(angular_vel) if abs(angular_vel) > 1.9 else angular_vel # *** Set to 2.8 by burger 3 specifications, change for burger 4 ***
         
         return linear_vel, angular_vel
 

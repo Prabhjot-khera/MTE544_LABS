@@ -35,14 +35,14 @@ class planner:
             while x <= 1.5:
                 y = x ** 2
                 trajectory.append([x, y])
-                x += 0.01  
+                x += 0.25  
         
         if (path == SIGMOID):
             x = 0.0
             while x <= 2.5:
                 sigmoid = 2/(1+math.e**(-2*(x))) - 1
                 trajectory.append([x,sigmoid]) 
-                x+=0.01
+                x+=0.25
 
         # the return should be a list of trajectory points: [ [x1,y1], ..., [xn,yn]]
         print(trajectory)

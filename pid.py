@@ -67,7 +67,7 @@ class PID_ctrl:
 
             
             # TODO Part 5: calculate the error dot 
-            error_dot += (self.history[i][0] - self.history[i-1][0])/dt
+            error_dot += (self.history[i][0] - self.history[i-1][0])/dt if dt > 0 else 0.0
             
         error_dot/=(len(self.history)-1)
         dt_avg/=(len(self.history)-1)
