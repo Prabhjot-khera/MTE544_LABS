@@ -80,7 +80,7 @@ class localization(Node):
         xhat=self.kf.get_states()
 
         # Update the pose estimate to be returned by getPose
-        self.pose=np.array([xhat[0], xhat[1], xhat[2], Time.from_msg(odom_msg.header.stamp).nanoseconds])
+        self.pose=np.array([xhat[0], xhat[1], xhat[2], odom_msg.header.stamp])
 
         # TODO Part 4: log your data
         # xhat state vector [x, y, th, w, v, vdot]
