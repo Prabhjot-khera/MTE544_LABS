@@ -48,7 +48,8 @@ class localization(Node):
         # TODO Part 3: Set up the quantities for the EKF (hint: you will need the functions for the states and measurements)
         
         x= np.array([0, 0, 0, 0, 0, 0]) # initial state vector [x, y, th, w, v, vdot]
-        
+
+        # We were tuning these values in the lab to test the Kalman filter
         Q= 0.5 * np.eye(x.size) # motion model uncertainty
 
         R= 0.5 * np.eye(4) # measurement model uncertainty
