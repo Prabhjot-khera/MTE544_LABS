@@ -56,7 +56,8 @@ class localization(Node):
         P= 0.5 * np.eye(x.size) # initial covariance
         
         self.kf=kalman_filter(P,Q,R, x, dt)
-        
+
+        # Set up subscribers for odom and imu
         self.odom_sub=message_filters.Subscriber(self, odom, "/odom", qos_profile=odom_qos)
         self.imu_sub=message_filters.Subscriber(self, Imu, "/imu", qos_profile=odom_qos)
         
@@ -70,11 +71,11 @@ class localization(Node):
         # your measurements are the linear velocity and angular velocity from odom msg
         # and linear acceleration in x and y from the imu msg
         # the kalman filter should do a proper integration to provide x,y and filter ax,ay
-        z=np.array([odom_msg.twist.twist.linear.x, odom_msg.twist.twist.angular.z, imu_msg.linear_acceleration.x, imu_msg.linear_acceleration.y])
+        z=np.array([odom_msg.twist.twist.linear.x, odom_msg.twist.twist.angular.z, imu_msg.linear_acceleration.x, imu_msg.linear_acceleration.y]) # Get the measurements from the odom and imu messages
 
         # Implement the two steps for estimation
-        self.kf.predict()
-        self.kf.update(z)
+        self.kf.predict() # step 1: prediction step based on the motion model and previous state
+        self.kf.update(z) # step 2: Update based on the measurement 
         
         # Get the estimate
         xhat=self.kf.get_states()

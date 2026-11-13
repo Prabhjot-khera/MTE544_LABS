@@ -10,17 +10,17 @@ class kalman_filter:
     # TODO Part 3: Initialize the covariances and the states    
     def __init__(self, P,Q,R, x, dt):
         
-        self.P= P #np.array(P).reshape(-1, 1)
-        self.Q= Q
-        self.R= R
+        self.P= P # initial covariance matrix
+        self.Q= Q # states covariance matrix
+        self.R= R # measurement covariance matrix
         self.x= x # state vector [x, y, th, w, v, vdot]
         self.dt = dt
         
     # TODO Part 3: Replace the matrices with Jacobians where needed        
     def predict(self):
-
-        self.A = self.jacobian_A()
-        self.C = self.jacobian_H() #consider moving self.C after self.motion_model maybe if we get issues
+        # Step 1: Prediction step where we implement the following: P = A*P*A' + Q
+        self.A = self.jacobian_A() 
+        self.C = self.jacobian_H() # NOTE: consider moving self.C after self.motion_model maybe if we get issues
         
         self.motion_model()
         
@@ -29,10 +29,11 @@ class kalman_filter:
     # TODO Part 3: Calculate the Kalman gain and correct your estimates
     def update(self, z):
         
-        kalman_gain= self.P @ self.C.T @ np.linalg.inv(self.C @ self.P @ self.C.T + self.R)
+        kalman_gain= self.P @ self.C.T @ np.linalg.inv(self.C @ self.P @ self.C.T + self.R) # Calculate Kalman gain based on this formula K = P*C'*inv(S)
         
-        self.x= self.x + kalman_gain @ (z - self.measurement_model())
-        
+        self.x= self.x + kalman_gain @ (z - self.measurement_model()) # Update state estimate based on Kalman gain
+
+        # Update covariance matrix based on this formula P = (I - K*C)*P
         self.P= (np.eye(self.P.shape[1]) - kalman_gain @ self.C) @ self.P # uses number of states for i matrix (second dim of C)
         
     
@@ -70,6 +71,7 @@ class kalman_filter:
         
         return np.array([
             # Columns: current x, y, th, w, v, vdot; rows: next state.
+            # take partial derivatives of the motion model with respect to each state variable to fill in the Jacobian matrix
             # x  y                  th   w               v  vdot
             [1, 0, -v*np.sin(th)*dt,  0,  np.cos(th)*dt,    0],  # x
             [0, 1,  v*np.cos(th)*dt,  0,  np.sin(th)*dt,    0],  # y
