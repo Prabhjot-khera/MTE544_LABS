@@ -52,7 +52,7 @@ class kalman_filter:
         
         x, y, th, w, v, vdot = self.x
         dt = self.dt
-        
+        # update the state vector
         self.x = np.array([
             x + v * np.cos(th) * dt, #x
             y + v * np.sin(th) * dt, #y
