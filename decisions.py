@@ -46,7 +46,7 @@ class decision_maker(Node):
         self.reachThreshold=0.1
 
         # TODO PART 5 your localization type
-        self.localizer=localization(kalmanFilter)
+        self.localizer=localization(kalmanFilter) # choosing kalman filter for localization as we had good results in lab3 
 
 
         
@@ -57,7 +57,7 @@ class decision_maker(Node):
         
         elif motion_type==TRAJECTORY_PLANNER:
             # TODO PART 5 Put the gains that you concluded from lab 2
-            self.controller=trajectoryController(klp=0.2, klv=0.2, kap=0.45, kav=0.2)    
+            self.controller=trajectoryController(klp=0.2, klv=0.2, kap=0.45, kav=0.2) # tuned params from lab2, increased kap for more rapid angular response
             self.planner=planner(TRAJECTORY_PLANNER)
         
         else:
