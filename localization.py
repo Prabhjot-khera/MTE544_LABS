@@ -73,7 +73,7 @@ class localization(Node):
             
             # TODO PART 5 Put the Q and R matrices
             # that you conclude from lab Three
-            Q=0.9 * np.eye(6)
+            Q=0.9 * np.eye(6) # from lab 3
             R=0.5 * np.eye(4)
             P=0.5 * np.eye(6)
                         

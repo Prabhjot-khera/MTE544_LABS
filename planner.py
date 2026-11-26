@@ -31,7 +31,7 @@ class planner:
         # TODO PART 5 Create the cost-map, the laser_sig is 
         # the standard deviation for the gausiian for which
         # the mean is located on the occupant grid. 
-        self.m_utilites=mapManipulator(filename_ = "room.yaml", laser_sig=0.6)
+        self.m_utilites=mapManipulator(filename_ = "room.yaml", laser_sig=0.6) # laser_sig of 0.6 to force the robot to go around the first cone for second traj in-lab
             
         self.costMap=self.m_utilites.make_likelihood_field()
         
@@ -49,12 +49,12 @@ class planner:
         
         # TODO PART 5 convert the cell pixels into the cartesian coordinates
         
-        Path = list(map(self.m_utilites.cell_2_position, search(self.costMap, startPose, endPose)))
+        Path = list(map(self.m_utilites.cell_2_position, search(self.costMap, startPose, endPose))) # convert the cell pixels into the cartesian coordinates and use search to get the path
 
 
 
         # TODO PART 5 return the path as list of [x,y]
-        return [[x,y] for x, y in Path]
+        return [[x,y] for x, y in Path] 
 
 
 

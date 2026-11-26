@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from math import sqrt
 
-HEURISTIC = 'e'
+HEURISTIC = 'e' # global variable to select heruistic mode between euclideian and manhattan
 
 class Node:
     """
@@ -48,9 +48,16 @@ def return_path(current_node, maze):
     return path
 
 def heuristic(point1, point2, mode: str):
-    if mode == 'e': #euclidian or manhattan
+    '''
+    param point1: (x1, y1)
+    param point2: (x2, y2)
+    param mode: 'e' for euclidian, 'm' for manhattan
+    returns the distance between two points based on the mode specified
+    '''
+    if mode == 'e':
         return sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
     else:
+        # manhattan distance is sum of abs differences of coordinates 
         dx = abs(point2[0] - point1[0])
         dy = abs(point2[1] - point1[1])
 
@@ -75,9 +82,9 @@ def search(maze, start, end):
     # TODO PART 4 Create start and end node with initized values for g, h and f
     # Use None as parent if not defined
     start_node = Node(None, start)
-    start_node.g = 0     # cost from start Node
-    start_node.h = heuristic(start, end, HEURISTIC)     # heuristic estimated cost to end Node
-    start_node.f = start_node.g + start_node.h
+    start_node.g = 0     # cost from start Node is 0 as its the start node to itself
+    start_node.h = heuristic(start, end, HEURISTIC)  # heuristic estimated cost to end Node
+    start_node.f = start_node.g + start_node.h # total cost
 
     end_node = Node(None, end)
     end_node.g = float("inf")       # set a large value if not defined
@@ -129,7 +136,7 @@ def search(maze, start, end):
                 d) else move the child to yet_to_visit dict
     """
     # TODO PART 4 find maze has got how many rows and columns
-    no_rows, no_columns = maze.shape
+    no_rows, no_columns = maze.shape # np.shape returns a tuple of array dimensions
 
     # Loop until you find the end
 
@@ -167,10 +174,10 @@ def search(maze, start, end):
         for new_position in move:
 
             # TODO PART 4 Get node position
-            node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
+            node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1]) # new node position is based on current node position + the move direction
 
             # TODO PART 4 Make sure within range (check if within maze boundary)
-            if ((node_position[0] < 0 or node_position[0] >= no_rows) or (node_position[1] < 0 or node_position[1] >= no_columns)):
+            if ((node_position[0] < 0 or node_position[0] >= no_rows) or (node_position[1] < 0 or node_position[1] >= no_columns)): # cannot be less than 0 or greater than the num of rows/cols
                 continue
 
             # Make sure walkable terrain
@@ -189,14 +196,14 @@ def search(maze, start, end):
 
             # TODO PART 4 Child is on the visited dict (use get method to check if child is in visited dict, if not found then default value is False)
             if (visited_dict.get(child.position, False)):
-                continue
+                continue # skip to next child if its already visited
 
             # TODO PART 4 Create the f, g, and h values
             child.g = current_node.g + heuristic(current_node.position, child.position, "e") # cost to current node + euclid distance to child node
             # Heuristic costs calculated here, this is using eucledian distance
-            child.h = heuristic(child.position, end, HEURISTIC)
+            child.h = heuristic(child.position, end, HEURISTIC) # heuristic cost from child node to end node
 
-            child.f = child.g + child.h
+            child.f = child.g + child.h # total cost
 
             # Child is already in the yet_to_visit list and g cost is already lower
             child_node_in_yet_to_visit = yet_to_visit_dict.get(
